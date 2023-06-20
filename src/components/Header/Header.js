@@ -4,11 +4,17 @@ import CallIcon from '@mui/icons-material/Call';
 import Slider from '../Slider'
 
 import { useLocation } from "react-router-dom";
+import { animated, useSpring } from '@react-spring/web'
 
 export default function Header(){
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const [header, setHeader] = useState("");
+
+    const springs = useSpring({
+        from: { x: 0 },
+        to: { x: 100 },
+    })
 
     const navigation = [
         { name: 'Product', href: '#' },
@@ -20,31 +26,32 @@ export default function Header(){
     let location = useLocation().pathname.split("/")[1];
 
     useEffect(() => {
-        async function loadData(){
-            const response = await fetch("https://affordabledebtconsolidation.com/wp-json/wp/v2/pages/?slug=" + location);
+      async function loadData(){
+        const response = await fetch("https://affordabledebtconsolidation.com/wp-json/wp/v2/pages/?slug=" + location);
 
-            if(response.ok){
-                const data = await response.json();
-                console.log(data);
-                console.log(data[0].title.rendered);
-            }
+        if(response.ok){
+            const data = await response.json();
+            console.log(data);
+            console.log(data[0].title.rendered);
         }
-        loadData();
+      }
+      loadData();
     }, []);
 
     return (
-        <div className="bg-white">
         <header className="inset-x-0 top-0 z-50 border-b border-gray-200 border-b-2 fixed bg-white">
             <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1">
+                <div 
+                    className="flex lg:flex-1"
+                >
                     <a href="#" className="-m-1.5 p-1.5">
                     <span className="sr-only">Your Company</span>
                     <img
                         className="h-8 w-auto"
-                        src="public/logo_header.avif"
+                        src="logo_header.avif"
                         alt=""
                     />
-                    </a>
+                  </a>
                 </div>
                 <div className="flex lg:hidden">
                     <button
@@ -58,15 +65,15 @@ export default function Header(){
 
                 <div className="lg:flex lg:flex-1 lg:justify-end">
                     <a href="tel:800-789-4908" className="text-sm font-semibold leading-6 text-gray-900">
-                        <CallIcon className="lg"></CallIcon>800-789-4908 
+                        <CallIcon className="lg"></CallIcon>800-789-4908
                     </a>
                 </div>
             </nav>
 
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-                
+
             <div className="fixed inset-0 z-50" />
-            
+
             <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                 <div className="flex items-center justify-between">
                 <a href="#" className="-m-1.5 p-1.5">
@@ -110,7 +117,6 @@ export default function Header(){
                 </div>
             </Dialog.Panel>
             </Dialog>
-        </header>        
-        </div>
+        </header>
     );
 }
