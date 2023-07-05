@@ -7,11 +7,12 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
 import { Slider as DebtSlider } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import { animated, useSpring } from '@react-spring/web'
 import axios from 'axios';
 import useWindowSize from 'react-use/lib/useWindowSize';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import validator from 'validator'
+
+import { animated, useSpring, easings } from '@react-spring/web'
 
 
 const marks = [
@@ -118,8 +119,17 @@ export default function Slider() {
   const [debtValue, setDebtValue] = useState(50000)
 
   const props = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: 1 }
+    from: { 
+      opacity: 0
+    },
+    to: { 
+      opacity: 1 
+    },
+    config: {
+      mass: 1,
+      friction: 60,
+      tension: 280,
+    },
   })
 
   const CustomButtonGroup = (props) => {
@@ -206,7 +216,7 @@ export default function Slider() {
   }
 
   return (
-    <div className="relative isolate px-10 sm:py-20 lg:py-24">
+    <div className="px-10 sm:py-20 lg:py-24">      
       <div
         className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
         aria-hidden="true"
@@ -221,7 +231,10 @@ export default function Slider() {
       </div>
 
       
-      <div className="mx-auto max-w-6xl py-32 sm:py-48 lg:py-56">
+      <animated.div 
+        className="mx-auto max-w-6xl py-32 sm:py-48 lg:py-56"
+        style={props}
+      >
 
         {(value.option1 == null && value.option2 == null) ? (
           <div className="text-center m-5">
@@ -274,7 +287,7 @@ export default function Slider() {
                     {Object.keys(ButtonData['option1']).map((key) => (
                       <button
                         key={key}
-                        className='items-center justify-center align-items text-gray-700 font-bold py-2 px-4 rounded border border-gray-400 hover:bg-sky-700 hover:text-white hover:outline-none hover:ring-2 hover:ring-sky-900 hover:ring-opacity-50 hover:scale-110 transform transition-all duration-500 ease-in-out'
+                        className='items-center justify-center align-items text-gray-700 font-bold py-2 px-4 rounded border border-gray-400 active:bg-sky-700 active:text-white active:bg-sky-700 focus:bg-sky-700 focus:text-white hover:bg-sky-700 hover:text-white hover:outline-none hover:ring-2 hover:ring-sky-900 hover:ring-opacity-50 hover:scale-110 transform transition-all duration-500 ease-in-out'
                         onClick={()=>handleChange({'option': 'option1', 'text': ButtonData['option1'][key] })}
                       >
                         {ButtonData['option1'][key]}
@@ -282,6 +295,15 @@ export default function Slider() {
                     ))}
                   </ButtonGroup>
                 </Box>
+                <div 
+                  className='w-full flex justify-center items-center mt-4 mb-40'
+                >
+                  <input
+                    className="block w-full rounded-md border-2 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 shadow-lg border-gray-300 border-2"
+                    type="phone"
+                    autoComplete='tel'
+                  ></input>
+                </div>
               </div>
               :
               <>
@@ -310,7 +332,7 @@ export default function Slider() {
                     {Object.keys(ButtonData['option2']).map((key) => (
                       <button
                         key={key}
-                        className='items-center justify-center align-items text-gray-700 font-bold py-2 px-4 rounded border border-gray-400 hover:bg-sky-700 hover:text-white hover:outline-none hover:ring-2 hover:ring-sky-900 hover:ring-opacity-50 hover:scale-110 transform transition-all duration-500 ease-in-out'
+                        className='items-center justify-center align-items text-gray-700 font-bold py-2 px-4 rounded border border-gray-400 active:bg-sky-700 active:text-white active:bg-sky-700 focus:bg-sky-700 focus:text-white hover:bg-sky-700 hover:text-white hover:outline-none hover:ring-2 hover:ring-sky-900 hover:ring-opacity-50 hover:scale-110 transform transition-all duration-500 ease-in-out'
                         onClick={()=>handleChange({'option': 'option2', 'text': ButtonData['option2'][key] })}
                       >
                         {ButtonData['option2'][key]}
@@ -610,7 +632,7 @@ export default function Slider() {
           <>
           </>
         }
-      </div>
+      </animated.div>
 
       <div
         className="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
@@ -623,6 +645,20 @@ export default function Slider() {
               'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
           }}
         />
+      </div>
+
+      {/* 
+        make div sticky to bottom right of screen
+        align text to right of div
+      */}
+      <div
+        className='sticky absolute grid grid-cols-8 z-100 bottom-0 right-0 border-radius-1'
+      >
+        <div
+          className='text-white col-start-7 col-end-8 bg-black'
+        >
+          hello
+        </div>
       </div>
 
     </div>

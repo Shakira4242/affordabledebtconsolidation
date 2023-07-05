@@ -4,7 +4,7 @@ import CallIcon from '@mui/icons-material/Call';
 import Slider from '../Slider'
 
 import { useLocation } from "react-router-dom";
-import { animated, useSpring } from '@react-spring/web'
+import { animated, useSpring, useTrail } from '@react-spring/web'
 
 export default function Header(){
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -14,6 +14,12 @@ export default function Header(){
     const springs = useSpring({
         from: { x: 0 },
         to: { x: 100 },
+    })
+
+    const trail = useSpring({
+        from: { opacity: 0 },
+        to: { opacity: 1 },
+        delay: 1000,
     })
 
     const navigation = [
@@ -39,10 +45,15 @@ export default function Header(){
     }, []);
 
     return (
-        <header className="inset-x-0 top-0 z-50 border-b border-gray-200 border-b-2 fixed bg-white">
-            <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+        <header className="inset-x-0 top-0 z-10 border-b border-gray-200 border-b-2 fixed bg-white">
+            <animated.nav 
+                className="flex items-center justify-between p-6 lg:px-8" 
+                aria-label="Global"
+                style={trail}
+            >
                 <div 
                     className="flex lg:flex-1"
+                    
                 >
                     <a href="#" className="-m-1.5 p-1.5">
                     <span className="sr-only">Your Company</span>
@@ -68,13 +79,13 @@ export default function Header(){
                         <CallIcon className="lg"></CallIcon>800-789-4908
                     </a>
                 </div>
-            </nav>
+            </animated.nav>
 
             <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
 
-            <div className="fixed inset-0 z-50" />
+            <div className="fixed inset-0 z-10" />
 
-            <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                 <div className="flex items-center justify-between">
                 <a href="#" className="-m-1.5 p-1.5">
                     <span className="sr-only">Your Company</span>
